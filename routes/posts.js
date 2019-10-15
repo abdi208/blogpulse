@@ -14,20 +14,17 @@ router.get('/', function(req, res) {
 router.get('/:id', function(req, res) {
     //--find by primRY KEY
     //--parseInt the params
-    db.post.findOne({
-        where: {id: parseInt(req.params.id)},
-        include: [db.comment]
-    }).then(function(post) {
-        post.getAuthor().then(function(author) {
-            res.render('posts/show', {post, author})
-        })
-    })
+    db.post.findByPk(parseInt(req.params.id), {include: [db.comment, db.author, db.tag]})
+    .then(function(post) {
+        res.render('posts/show', {post})
+        console.log(author)
+})
 })
 //get new post through form on new file in post folder inside views
 router.get('/new', function(req, res) {
     res.render('posts/new')
 })
-
+//post a new comment
 router.post('/:id/comments', function(req, res){
     db.post.findByPk(parseInt(req.params.id))
     .then(function(post){
@@ -35,9 +32,21 @@ router.post('/:id/comments', function(req, res){
             name:req.body.name,
             content:req.body.content
         }).then(function(comment){
-            res.redirect('/posts/' +req.params.id)
+            res.redirect(`/posts/${req.params.id}`)
         })
     })
 });
 
+// //adding a new comment
+// router.post('/:id/comments', function(req, res) {
+//     db.post.findByPk(parseInt(req.params.id){
+//         //then recieves data
+//         .then(function(post) {
+//             //create comment
+//             post.createComment(req.body).then(function(comment) {
+//                 res.redirect('/')
+//             })
+//         })
+//     })
+// })
 module.exports = router;

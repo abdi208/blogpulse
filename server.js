@@ -14,6 +14,7 @@ app.use(ejsLayouts);
 app.use('/authors', require('./routes/authors'));
 app.use('/posts', require('./routes/posts'))
 app.use('/comments', require('./routes/comments'))
+app.use('/tags', require('./routes/tags'))
 
 app.listen(3000, function(){
     console.log('app running')

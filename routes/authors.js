@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 
-// get /authors/
+// get all /authors/
 router.get('/', function(req, res) {
     db.author.findAll()
     .then(function(authors) {
@@ -10,18 +10,19 @@ router.get('/', function(req, res) {
     });
 });
 
-//
+// get a new author
 router.get('/new', function(req, res) {
     res.render('authors/new')
 })
 
+//post after creting an author
 router.post('/', function(req, res) {
     db.author.create(req.body)
     .then(function(author) {
         res.redirect('/authors')
     });
 });
-
+//get one///
 router.get('/:id', function(req, res) {
     db.author.findByPk(parseInt(req.params.id))
         .then(function(author) {
@@ -41,4 +42,5 @@ router.post('/:id/posts', function(req, res) {
         })
     
 })
+
 module.exports = router;
